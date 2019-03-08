@@ -1,0 +1,21 @@
+.schema tablename
+
+CREATE TABLE recipe (
+        id integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+        recipe_name text,
+        recipe text,
+        bookmarked CHARACTER(1)
+);
+
+CREATE TABLE tags (
+        id integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+        tag text
+);
+
+
+CREATE TABLE tags_map (
+        recipe_id integer NOT NULL,
+        tag_id integer NOT NULL,
+        PRIMARY KEY (recipe_id, tag_id)
+);
+

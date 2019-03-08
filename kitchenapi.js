@@ -1,9 +1,11 @@
-var express = require("express");
-var cors = require('cors');
-const routes = require('./routes/routes');
+const express = require("express");
+const cors = require('cors');
+const bookmark = require('./routes/bookmark');
+const tags = require('./routes/tags');
 
-var app = express();
+const app = express();
 app.use(cors());
+app.use(express.json());
 
 // app.delete('/api/v1/todos/:id', (req, res) => {
 // req.params.id
@@ -12,7 +14,7 @@ app.listen(2001, () => {
 	console.log("Server running on port 2001");
 });
 
-routes(app);
+
 
 
 const sqlite3 = require('sqlite3').verbose();
@@ -20,11 +22,17 @@ const DB_PATH = './sqlite.db';
 
 const DB = new sqlite3.Database(DB_PATH, function(err){
     if (err) {
-        console.log(err)
-        return
+        console.log(err);
+        return;
     }
-    console.log('Connected to ' + DB_PATH + ' database.')
+    console.log('Connected to ' + DB_PATH + ' database.');
 });
+
+
+bookmark(app,DB);
+tags(app,DB);
+
+
 
 /*
 dbSchema = `CREATE TABLE IF NOT EXISTS recipe (
@@ -53,4 +61,4 @@ DB.exec(dbSchema, function(err){
 });
 */
 
-DB.close();
+//DB.close();

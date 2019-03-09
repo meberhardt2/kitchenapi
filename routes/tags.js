@@ -12,7 +12,7 @@ const tags = (app,DB) => {
 				return
 			}
 
-			out = rows
+			out = rows;
 			response.json(out);
 		});
 	});

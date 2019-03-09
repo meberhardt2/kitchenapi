@@ -4,7 +4,8 @@ CREATE TABLE recipe (
         id integer NOT NULL PRIMARY KEY AUTOINCREMENT,
         recipe_name text,
         recipe text,
-        bookmarked CHARACTER(1)
+        bookmarked CHARACTER(1),
+		ingredients text
 );
 
 CREATE TABLE tags (

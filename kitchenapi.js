@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require('cors');
 const bookmark = require('./routes/bookmark');
 const tags = require('./routes/tags');
+const recipe = require('./routes/recipe');
 
 const app = express();
 app.use(cors());
@@ -31,6 +32,7 @@ const DB = new sqlite3.Database(DB_PATH, function(err){
 
 bookmark(app,DB);
 tags(app,DB);
+recipe(app,DB);
 
 
 

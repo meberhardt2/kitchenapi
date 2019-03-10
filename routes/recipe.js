@@ -1,7 +1,30 @@
 
 /**************************************************************************************/
 const recipe = (app,DB) => {
-	
+
+	/********************************************/
+	app.delete('/api/recipe/:id', (request, response) => {
+		let sql = 'delete from recipe where id = ?; ';
+
+		DB.run(sql, [request.params.id], function(error, row) {
+			if (error) {
+				console.log(error)
+				return
+			}
+
+			let sql2 = 'delete from tags_map where recipe_id = ?; ';
+			DB.run(sql2, [request.params.id], function(error, row) {
+				if (error) {
+					console.log(error)
+					return
+				}
+				response.json({'status': 'ok'});
+			});
+		});
+	});
+	/********************************************/
+
+
 	/********************************************/
 	app.get('/api/recipe/:id', (request, response) => {
 		let out = {};

@@ -2,6 +2,24 @@
 const search = (app,DB) => {
 
 	/********************************************/
+	app.post('/api/random', (request, response) => {
+		let sql = 'select * from recipe order by random() limit 1;';
+		DB.all(sql, [], function(error, row) {
+			if (error) {
+				console.log(error)
+				return
+			}
+			else{
+				let results = row;
+
+				response.json(results);
+			}
+		});
+	});	
+	/********************************************/
+	
+		
+	/********************************************/
 	app.post('/api/search', (request, response) => {
 		let post = request.body;
 		let sql = 'select * from recipe ';
@@ -24,6 +42,8 @@ const search = (app,DB) => {
 			//cap off the where
 			sql += '1 = 1 '
 		}
+
+		sql += ' order by recipe_name'
 
 		DB.all(sql, bind_parameters, function(error, rows) {
 			if (error) {

@@ -62,10 +62,15 @@ const search = (app,DB) => {
 						if(post.tags.length > 0){
 							let new_results = [];
 							for(let x = 0; x < results.length; x++){
+								let tag_match_counter = 0;
 								for(let y = 0; y < valid_ids.length; y++){
 									if(results[x].id === valid_ids[y].recipe_id){
-										new_results.push(results[x]);
+										tag_match_counter++;
 									}
+								}
+
+								if(tag_match_counter === tag_ids.length){
+									new_results.push(results[x]);
 								}
 							}
 							response.json(new_results);

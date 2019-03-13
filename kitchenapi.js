@@ -18,15 +18,10 @@ const sslOptions = {
 };
 
 
-//app.listen(2001, () => {
-//	console.log("Server running on port 2001");
-//});
-
 https.createServer(sslOptions, app).listen(2001);
 
 
 const sqlite3 = require('sqlite3').verbose();
-//const DB_PATH = './sqlite.db';
 const DB_PATH = '/var/www/kitchenapi/sqlite.db';
 
 const DB = new sqlite3.Database(DB_PATH, function(err){

@@ -4,13 +4,13 @@ const bookmark = require('./routes/bookmark');
 const tags = require('./routes/tags');
 const recipe = require('./routes/recipe');
 const search = require('./routes/search');
+const camera = require('./routes/camera');
 const fs = require('fs');
 const https = require('https');
 
 const app = express();
 app.use(cors());
-app.use(express.json());
-
+app.use(express.json({limit: '50mb'}));
 
 const sslOptions = {
     key: fs.readFileSync("/var/www/certs/kitchen.local.key"),
@@ -37,6 +37,7 @@ bookmark(app,DB);
 tags(app,DB);
 recipe(app,DB);
 search(app,DB);
+camera(app,DB,fs);
 
 
 

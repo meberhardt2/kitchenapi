@@ -7,6 +7,7 @@ const search = require('./routes/search');
 const camera = require('./routes/camera');
 const fs = require('fs');
 const https = require('https');
+const tesseract = require('node-tesseract');
 
 const app = express();
 app.use(cors());
@@ -37,7 +38,7 @@ bookmark(app,DB);
 tags(app,DB);
 recipe(app,DB);
 search(app,DB);
-camera(app,DB,fs);
+camera(app,DB,fs,tesseract);
 
 
 

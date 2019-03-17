@@ -101,29 +101,35 @@ const recipe = (app,DB) => {
 					else{
 						let recipe_id = this.lastID;
 						let data = [];
+						
+						//adds from the camera area only have the name and the recipe, so the tags are missing. meant to be added via laptop
+						if(post.tags.length > 0){
+							sql3 = 'insert into tags_map(recipe_id,tag_id)';
+							for(let i = 0; i < post.tags.length; i++){
+								if(i === 0){
+									sql3 += ' values(?, ?)';
+								}
+								else{
+									sql3 += ',(?, ?)';
+								}
+								data.push(recipe_id);
+								data.push(post.tags[i].id);
+							}
 
-						sql3 = 'insert into tags_map(recipe_id,tag_id)';
-						for(let i = 0; i < post.tags.length; i++){
-							if(i === 0){
-								sql3 += ' values(?, ?)';
-							}
-							else{
-								sql3 += ',(?, ?)';
-							}
-							data.push(recipe_id);
-							data.push(post.tags[i].id);
+							DB.run(sql3, data, function(error, row) {
+								if (error) {
+									console.log(error)
+									response.json({id: 0});
+									return
+								}
+								else{
+									response.json({id: recipe_id});
+								}
+							});
 						}
-
-						DB.run(sql3, data, function(error, row) {
-							if (error) {
-								console.log(error)
-								response.json({id: 0});
-								return
-							}
-							else{
-								response.json({id: recipe_id});
-							}
-						});
+						else{
+							response.json({id: recipe_id});
+						}
 					}
 				});
 			}

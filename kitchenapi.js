@@ -5,9 +5,12 @@ const tags = require('./routes/tags');
 const recipe = require('./routes/recipe');
 const search = require('./routes/search');
 const camera = require('./routes/camera');
+const email = require('./routes/email');
 const fs = require('fs');
 const https = require('https');
 const tesseract = require('node-tesseract');
+
+const creds = JSON.parse(fs.readFileSync('/var/www/conf/kitchenapi.json', 'UTF-8'));
 
 const app = express();
 app.use(cors());
@@ -39,7 +42,7 @@ tags(app,DB);
 recipe(app,DB);
 search(app,DB);
 camera(app,DB,fs,tesseract);
-
+email(app,DB,creds)
 
 
 

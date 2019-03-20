@@ -5,7 +5,6 @@ const tags = require('./routes/tags');
 const recipe = require('./routes/recipe');
 const search = require('./routes/search');
 const camera = require('./routes/camera');
-const email = require('./routes/email');
 const fs = require('fs');
 const https = require('https');
 const tesseract = require('node-tesseract');
@@ -39,10 +38,9 @@ const DB = new sqlite3.Database(DB_PATH, function(err){
 
 bookmark(app,DB);
 tags(app,DB);
-recipe(app,DB);
+recipe(app,DB,creds);
 search(app,DB);
 camera(app,DB,fs,tesseract);
-email(app,DB,creds)
 
 
 

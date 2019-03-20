@@ -1,6 +1,6 @@
 
 /**************************************************************************************/
-const recipe = (app,DB) => {
+const recipe = (app,DB,creds) => {
 
 	/********************************************/
 	app.delete('/api/recipe/:id', (request, response) => {
@@ -139,7 +139,7 @@ const recipe = (app,DB) => {
 
 
 	/********************************************/
-	app.patch('/api/recipe', (request, response) => {
+	app.patch('/api/recipe/:id', (request, response) => {
 		let post = request.body;
 		let sql1 = '';
 		let sql2 = '';
@@ -164,14 +164,14 @@ const recipe = (app,DB) => {
 			}
 			else{
 				sql2 = 'update recipe set recipe_name = ?, recipe = ?, bookmarked = ?, ingredients = ? where id = ?; ';
-				DB.run(sql2, [post.recipe_name,post.recipe,post.bookmarked,post.ingredients,post.id], function(error, row) {
+				DB.run(sql2, [post.recipe_name,post.recipe,post.bookmarked,post.ingredients,request.params.id], function(error, row) {
 					if (error) {
 						console.log(error)
 						response.json({id: 0});
 						return
 					}
 					else{
-						let recipe_id = post.id;
+						let recipe_id = request.params.id;
 						let data = [];
 						
 						sql3 = 'delete from tags_map where recipe_id = ?;';
@@ -210,6 +210,63 @@ const recipe = (app,DB) => {
 				});
 			}
 		});
+	});
+	/********************************************/
+
+
+	/********************************************/
+	app.post('/api/recipe/:id/sendgrid', (request, response) => {
+		const sendgrid = require('@sendgrid/mail');
+		let message = {};
+
+		//request.params.id
+		sendgrid.setApiKey(creds.sendgrid.apikey);
+		message = {
+			to: 'matthew.eberhardt@gmail.com',
+			from: 'nowhere@redknight.net',
+			subject: 'recipe from the eberhardts',
+			text: 'plaintext',
+			html: '<strong>email</strong>',
+		};
+		sendgrid.send(message);
+
+		response.json({'status': 'sent'});
+	});
+	/********************************************/
+
+
+	/********************************************/
+	app.post('/api/recipe/:id/gmail', (request, response) => {
+		const nodemailer = require('nodemailer');
+		let message = {};
+
+		//request.params.id
+		let transporter = nodemailer.createTransport({
+			host: 'smtp.googlemail.com', // Gmail Host
+			port: 465, // Port
+			secure: true, // this is true as port is 465
+			auth: {
+				user: creds.gmail.userAccount, //Gmail username
+				pass: creds.gmail.applicationPassword, // Gmail password
+			}
+		});
+	 
+		let mailOptions = {
+			from: '"Matt Eberhardt" <matthew.eberhardt@gmail.com>',
+			to: 'matthew.eberhardt@gmail.com', // Recepient email address. Multiple emails can send separated by commas
+			subject: 'Welcome Email',
+			text: 'This is the email sent through Gmail SMTP Server.'
+		};
+	 
+		transporter.sendMail(mailOptions, (error, info) => {
+			if (error) {
+				return console.log(error);
+			}
+			//console.log('Message sent: %s', info.messageId);
+
+			response.json({'status': 'sent'});
+		});
+
 	});
 	/********************************************/
 

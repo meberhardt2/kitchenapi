@@ -23,17 +23,11 @@ const sslOptions = {
 
 https.createServer(sslOptions, app).listen(2001);
 
-
-const sqlite3 = require('sqlite3').verbose();
+//node-sqlite3 runs asynchronous, which leads to promise mess of chaining. better-sqlite3 runs synchronously
 const DB_PATH = '/var/www/kitchenapi/sqlite.db';
-
-const DB = new sqlite3.Database(DB_PATH, function(err){
-    if (err) {
-        console.log(err);
-        return;
-    }
-    console.log('Connected to ' + DB_PATH + ' database.');
-});
+const sqlite3 = require('better-sqlite3');
+const DB = new sqlite3(DB_PATH);
+//const DB = new sqlite3(DB_PATH, { verbose: console.log });
 
 
 bookmark(app,DB);

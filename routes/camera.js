@@ -3,6 +3,10 @@ const camera = (app,DB,fs,tesseract) => {
 
 	/********************************************/
 	app.post('/api/camera', (request, response) => {
+
+		//for now this isbeing left in the end point. eventually use async/await to return data only after tesseract is done
+
+
 		let file = '/var/www/kitchen/uploads/for_ocr.png';
 		let post = request.body;
 		let bitmap = Buffer.from(post.image, 'base64');

@@ -3,84 +3,60 @@ const tags = (app,DB) => {
 
 	/********************************************/
 	app.get('/api/tags', (request, response) => {
-		let sql = 'select * from tags order by tag ';
-		let out = [];
+		const Tag = require('../classes/tag');
+		let tag = new Tag(DB);
 
-		DB.all(sql, [], function(error, rows) {
-			if (error) {
-				console.log(error)
-				return
-			}
-
-			out = rows;
-			response.json(out);
-		});
+		let data_out = tag.all();
+		
+		response.json(data_out);
 	});
 	/********************************************/
 
 
 	/********************************************/
 	app.post('/api/tags', (request, response) => {
-		let post = request.body;
+		const Tag = require('../classes/tag');
+		
+		let tag = new Tag(DB);
+		tag.post = request.body;
+		let id = tag.add();
+
 		let out = {
-			id: 0
+			id: id
 		};
-
-		let sql = 'insert into tags(tag) values(?); ';
-
-		DB.run(sql, [post.new_tag], function(error, rows) {
-			if (error) {
-				console.log(error)
-				return
-			}
-			else{
-				out = {
-					id: this.lastID
-				};
-			}
-
-			response.json(out);
-		});
+		response.json(out);
 	});
 	/********************************************/
 
 
 	/********************************************/
 	app.delete('/api/tags/:id', (request, response) => {
-		let out = {};
-		let sql = 'delete from tags where id = ?; ';
+		const Tag = require('../classes/tag');
+		
+		let tag = new Tag(DB);
+		tag.id = request.params.id;
+		tag.delete();
 
-		DB.run(sql, [request.params.id], function(error, rows) {
-			if (error) {
-				console.log(error)
-				return
-			}
-
-			response.json(out);
-		});
+		response.json({});
 	});
 	/********************************************/
 
 
 	/********************************************/
 	app.patch('/api/tags/:id', (request, response) => {
-		let post = request.body;
-		let out = {};
-		let sql = 'update tags set tag = ? where id = ?; ';
+		const Tag = require('../classes/tag');
+		
+		let tag = new Tag(DB);
+		tag.id = request.params.id;
+		tag.post = request.body;
+		tag.update();
 
-		DB.run(sql, [post.tag,request.params.id], function(error, rows) {
-			if (error) {
-				console.log(error)
-				return
-			}
+		let out = {
+			id: request.params.id,
+			tag: request.body.tag
+		};
 
-			out = {
-				id: request.params.id,
-				tag: post.tag
-			};
-			
-			response.json(out);
-		});
+		response.json(out);
 	});
 	/********************************************/
 

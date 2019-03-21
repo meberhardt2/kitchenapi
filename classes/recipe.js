@@ -171,6 +171,12 @@ module.exports = class recipe{
 		const nodemailer = require('nodemailer');
 		let message = {};
 
+		let recipe = this.get();
+		let body = "Ingredients:\n" +
+					recipe.ingredients+"\n\n" +
+					"Recipe:\n" +
+					recipe.recipe+"\n\n";
+
 		//request.params.id
 		let transporter = nodemailer.createTransport({
 			host: 'smtp.googlemail.com', // Gmail Host
@@ -184,9 +190,9 @@ module.exports = class recipe{
 	 
 		let mailOptions = {
 			from: '"Matt Eberhardt" <matthew.eberhardt@gmail.com>',
-			to: 'matthew.eberhardt@gmail.com', // Recepient email address. Multiple emails can send separated by commas
-			subject: 'Welcome Email',
-			text: 'This is the email sent through Gmail SMTP Server.'
+			to: this.post.email, // Recepient email address. Multiple emails can send separated by commas
+			subject: 'Recipe from the Eberhardts',
+			text: body
 		};
 	 
 		transporter.sendMail(mailOptions, (error, info) => {

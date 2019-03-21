@@ -63,8 +63,9 @@ const recipe = (app,DB,creds) => {
 		const Recipe = require('../classes/recipe');
 		
 		let recipe = new Recipe(DB);
-		recipe.creds = creds.sendgrid.apikey;
+		recipe.creds = creds;
 		recipe.id = request.params.id;
+		recipe.post = request.body;
 		recipe.sendgrid();
 
 		response.json({'status': 'sent'});
@@ -77,8 +78,9 @@ const recipe = (app,DB,creds) => {
 		const Recipe = require('../classes/recipe');
 		
 		let recipe = new Recipe(DB);
-		recipe.creds = creds.sendgrid.apikey;
+		recipe.creds = creds;
 		recipe.id = request.params.id;
+		recipe.post = request.body;
 		recipe.gmail();
 
 		response.json({'status': 'sent'});

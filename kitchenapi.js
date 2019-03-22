@@ -5,9 +5,11 @@ const tags = require('./routes/tags');
 const recipe = require('./routes/recipe');
 const search = require('./routes/search');
 const camera = require('./routes/camera');
+const upload = require('./routes/upload');
 const fs = require('fs');
 const https = require('https');
 const tesseract = require('node-tesseract');
+const multer = require('multer');
 
 const creds = JSON.parse(fs.readFileSync('/var/www/conf/kitchenapi.json', 'UTF-8'));
 
@@ -20,6 +22,7 @@ const sslOptions = {
     cert: fs.readFileSync("/var/www/certs/kitchen.local.crt")
 };
 
+const uploadMulter = multer({ dest: '/var/www/kitchen/uploads/' });
 
 https.createServer(sslOptions, app).listen(2001);
 
@@ -35,6 +38,7 @@ tags(app,DB);
 recipe(app,DB,creds);
 search(app,DB);
 camera(app,DB,fs,tesseract);
+upload(app,DB,fs,tesseract,uploadMulter);
 
 
 

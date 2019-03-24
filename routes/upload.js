@@ -3,6 +3,8 @@ const upload = (app,DB,fs,tesseract,uploadMulter) => {
 
 	/********************************************/
 	app.post('/api/upload', uploadMulter.single('imagefile'), async (request, response) => {
+		//imagefile is the name of the formfield that has the image
+		//multer can also take an array of files
 		const tempPath = request.file.path;
 		const file = '/var/www/kitchen/uploads/for_ocr.jpg';
 
@@ -21,7 +23,7 @@ const upload = (app,DB,fs,tesseract,uploadMulter) => {
 		
 		let text = await promise;
 
-		response.json({'text': 'dd'});
+		response.json({'text': text});
 	});
 	/********************************************/
 

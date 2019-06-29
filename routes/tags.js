@@ -15,48 +15,57 @@ const tags = (app,DB) => {
 
 	/********************************************/
 	app.post('/api/tags', (request, response) => {
-		const Tag = require('../classes/tag');
-		
-		let tag = new Tag(DB);
-		tag.post = request.body;
-		let id = tag.add();
+		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+		if(remoteAddress.includes("192.168.1.")){
+			const Tag = require('../classes/tag');
+			
+			let tag = new Tag(DB);
+			tag.post = request.body;
+			let id = tag.add();
 
-		let out = {
-			id: id
-		};
-		response.json(out);
+			let out = {
+				id: id
+			};
+			response.json(out);
+		}
 	});
 	/********************************************/
 
 
 	/********************************************/
 	app.delete('/api/tags/:id', (request, response) => {
-		const Tag = require('../classes/tag');
-		
-		let tag = new Tag(DB);
-		tag.id = request.params.id;
-		tag.delete();
+		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+		if(remoteAddress.includes("192.168.1.")){
+			const Tag = require('../classes/tag');
+			
+			let tag = new Tag(DB);
+			tag.id = request.params.id;
+			tag.delete();
 
-		response.json({});
+			response.json({});
+		}
 	});
 	/********************************************/
 
 
 	/********************************************/
 	app.patch('/api/tags/:id', (request, response) => {
-		const Tag = require('../classes/tag');
-		
-		let tag = new Tag(DB);
-		tag.id = request.params.id;
-		tag.post = request.body;
-		tag.update();
+		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
+		if(remoteAddress.includes("192.168.1.")){
+			const Tag = require('../classes/tag');
+			
+			let tag = new Tag(DB);
+			tag.id = request.params.id;
+			tag.post = request.body;
+			tag.update();
 
-		let out = {
-			id: request.params.id,
-			tag: request.body.tag
-		};
+			let out = {
+				id: request.params.id,
+				tag: request.body.tag
+			};
 
-		response.json(out);
+			response.json(out);
+		}
 	});
 	/********************************************/
 

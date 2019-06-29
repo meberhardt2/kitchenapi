@@ -34,7 +34,6 @@ const sqlite3 = require('better-sqlite3');
 const DB = new sqlite3(DB_PATH);
 //const DB = new sqlite3(DB_PATH, { verbose: console.log });
 
-
 bookmark(app,DB);
 tags(app,DB);
 recipe(app,DB,creds);

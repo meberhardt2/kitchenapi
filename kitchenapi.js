@@ -17,9 +17,11 @@ const app = express();
 app.use(cors());
 app.use(express.json({limit: '50mb'}));
 
+///etc/letsencrypt/live/eberhardt.cloud
+
 const sslOptions = {
-    key: fs.readFileSync("/var/www/certs/kitchen.local.key"),
-    cert: fs.readFileSync("/var/www/certs/kitchen.local.crt")
+    key: fs.readFileSync("/etc/letsencrypt/live/eberhardt.cloud/privkey.pem"),
+    cert: fs.readFileSync("/etc/letsencrypt/live/eberhardt.cloud/fullchain.pem")
 };
 
 const uploadMulter = multer({ dest: '/var/www/kitchen/uploads/' });

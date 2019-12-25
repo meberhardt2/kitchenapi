@@ -24,7 +24,7 @@ const sslOptions = {
     cert: fs.readFileSync("/etc/letsencrypt/live/eberhardt.cloud/fullchain.pem")
 };
 
-const uploadMulter = multer({ dest: '/var/www/kitchen/uploads/' });
+const uploadMulter = multer({ dest: '/var/www/kitchenExpress/uploads/' });
 
 https.createServer(sslOptions, app).listen(2001);
 

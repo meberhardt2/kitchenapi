@@ -11,8 +11,11 @@ module.exports = class search{
 	/********************************************/
 	random(){
 		let sql = 'select * from recipe order by random() limit 1; ';
-		let data_out = this.DB.prepare(sql).get();
+		let temp = this.DB.prepare(sql).get();
 
+		let data_out = [];
+		data_out.push(temp);
+		
 		return data_out;
 	}
 	/********************************************/

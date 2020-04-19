@@ -48,7 +48,7 @@ module.exports = class recipe{
 	
 	/********************************************/
 	add_bookmark(){
-		let sql = 'update recipe set bookmarked = "n"';
+		let sql = "update recipe set bookmarked = 'n'";
 		this.DB.prepare(sql).run();
 
 		sql = "update recipe set bookmarked = 'y' where id = ?";
@@ -77,7 +77,7 @@ module.exports = class recipe{
 		let recipe_id = 0;
 		//if this is being added as a bookmark, make sure there isnt one already. there can be only one. highlander
 		if(this.post.bookmarked === 'y'){
-			this.DB.prepare('update recipe set bookmarked = "n"').run();
+			this.DB.prepare("update recipe set bookmarked = 'n'").run();
 		}
 
 		let sql = 'insert into recipe(recipe_name,recipe,bookmarked,ingredients) values(?, ?, ?, ?) ';
@@ -118,7 +118,7 @@ module.exports = class recipe{
 	update(){
 		//if this is being added as a bookmark, make sure there isnt one already. there can be only one. highlander
 		if(this.post.bookmarked === 'y'){
-			this.DB.prepare('update recipe set bookmarked = "n"').run()
+			this.DB.prepare("update recipe set bookmarked = 'n'").run()
 		}
 
 		let sql = 'update recipe set recipe_name = ?, recipe = ?, bookmarked = ?, ingredients = ? where id = ?';

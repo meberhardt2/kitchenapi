@@ -28,11 +28,11 @@ module.exports = class search{
 		let bind_parameters = [];
 
 		if(this.post.recipe_name !== ''){
-			bind_parameters.push('%'+this.post.recipe_name+'%');
+			bind_parameters.push('%'+this.post.recipe_name.trim()+'%');
 			sql_where += 'recipe_name like ? and ';
 		}
 		if(this.post.ingredients !== ''){
-			bind_parameters.push('%'+this.post.ingredients+'%');
+			bind_parameters.push('%'+this.post.ingredients.trim()+'%');
 			sql_where += 'ingredients like ? and ';
 		}
 

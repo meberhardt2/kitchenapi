@@ -19,4 +19,3 @@ CREATE TABLE tags_map (
         tag_id integer NOT NULL,
         PRIMARY KEY (recipe_id, tag_id)
 );
-

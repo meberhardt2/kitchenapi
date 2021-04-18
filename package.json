@@ -19,6 +19,7 @@
     "eslint-plugin-react": "^7.23.2",
     "express": "^4.17.1",
     "multer": "^1.4.2",
+    "my-local-ip": "^1.0.0",
     "node-tesseract": "^0.2.7",
     "nodemailer": "^6.5.0",
     "sqlite3": "^5.0.2"

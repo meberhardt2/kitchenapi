@@ -7,40 +7,38 @@ const search = require('./routes/search');
 const camera = require('./routes/camera');
 const upload = require('./routes/upload');
 const fs = require('fs');
-//const https = require('https');
-//const http = require('http');
 const tesseract = require('node-tesseract');
 const multer = require('multer');
+const ip = require('my-local-ip')();
+const creds = JSON.parse(fs.readFileSync('../conf/kitchenapi.json', 'UTF-8'));
 
 var os = require( 'os' );
 var networkInterfaces = os.networkInterfaces();
-
-console.log(networkInterfaces);
-
-/*
-const creds = JSON.parse(fs.readFileSync('/var/www/conf/kitchenapi.json', 'UTF-8'));
 
 const app = express();
 app.use(cors());
 app.use(express.json({limit: '50mb'}));
 
-///etc/letsencrypt/live/eberhardt.cloud
+
+if(ip.includes("10.")){
+    const http = require('http');
+    http.createServer(app).listen(2004);
+}
+else{
+    const https = require('https');
+    const sslOptions = {
+        key: fs.readFileSync("/etc/letsencrypt/live/eberhardt.cloud/privkey.pem"),
+        cert: fs.readFileSync("/etc/letsencrypt/live/eberhardt.cloud/fullchain.pem")
+    };
+    https.createServer(sslOptions, app).listen(2004);
+}
 
 
-const sslOptions = {
-    key: fs.readFileSync("/etc/letsencrypt/live/eberhardt.cloud/privkey.pem"),
-    cert: fs.readFileSync("/etc/letsencrypt/live/eberhardt.cloud/fullchain.pem")
-};
+const uploadMulter = multer({ dest: '../kitchenExpress/uploads/' });
 
-
-const uploadMulter = multer({ dest: '/var/www/kitchenExpress/uploads/' });
-
-https.createServer(sslOptions, app).listen(2004);
-//http.createServer(app).listen(2003);
-//http.timeout = 10000;
 
 //node-sqlite3 runs asynchronous, which leads to promise mess of chaining. better-sqlite3 runs synchronously
-const DB_PATH = '/var/www/kitchenapi/sqlite.db';
+const DB_PATH = 'sqlite.db';
 const sqlite3 = require('better-sqlite3');
 const DB = new sqlite3(DB_PATH);
 //const DB = new sqlite3(DB_PATH, { verbose: console.log });
@@ -51,7 +49,7 @@ recipe(app,DB,creds);
 search(app,DB);
 camera(app,DB,fs,tesseract);
 upload(app,DB,fs,tesseract,uploadMulter);
-*/
+
 
 
 //DB.close();

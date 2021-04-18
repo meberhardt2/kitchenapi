@@ -7,11 +7,17 @@ const search = require('./routes/search');
 const camera = require('./routes/camera');
 const upload = require('./routes/upload');
 const fs = require('fs');
-const https = require('https');
+//const https = require('https');
 //const http = require('http');
 const tesseract = require('node-tesseract');
 const multer = require('multer');
 
+var os = require( 'os' );
+var networkInterfaces = os.networkInterfaces();
+
+console.log(networkInterfaces);
+
+/*
 const creds = JSON.parse(fs.readFileSync('/var/www/conf/kitchenapi.json', 'UTF-8'));
 
 const app = express();
@@ -45,7 +51,7 @@ recipe(app,DB,creds);
 search(app,DB);
 camera(app,DB,fs,tesseract);
 upload(app,DB,fs,tesseract,uploadMulter);
-
+*/
 
 
 //DB.close();

@@ -1,0 +1,1 @@
+see the readme for kitchenReact for an explanation on this project and setup

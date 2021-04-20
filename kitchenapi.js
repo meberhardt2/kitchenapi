@@ -38,7 +38,7 @@ const uploadMulter = multer({ dest: __dirname+'/kitchenExpress/uploads/' });
 
 
 //node-sqlite3 runs asynchronous, which leads to promise mess of chaining. better-sqlite3 runs synchronously
-const DB_PATH = 'sqlite.db';
+const DB_PATH = __dirname+'/sqlite.db';
 const sqlite3 = require('better-sqlite3');
 const DB = new sqlite3(DB_PATH);
 //const DB = new sqlite3(DB_PATH, { verbose: console.log });

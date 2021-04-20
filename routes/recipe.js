@@ -1,11 +1,11 @@
 
 /**************************************************************************************/
-const recipe = (app,DB,creds) => {
+const recipe = (app,DB,creds,allowed_ip) => {
 
 	/********************************************/
 	app.delete('/api/recipe/:id', (request, response) => {
-		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-		if(remoteAddress.includes("192.168.1.")){
+		const remoteAddress = request.connection.remoteAddress;
+		if(remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			let recipe = new Recipe(DB);
 
@@ -13,6 +13,9 @@ const recipe = (app,DB,creds) => {
 			recipe.delete();
 			
 			response.json({'status': 'ok'});
+		}
+		else{
+			response.json({'status': 'forbidden'});
 		}
 	});
 	/********************************************/
@@ -33,8 +36,8 @@ const recipe = (app,DB,creds) => {
 
 	/********************************************/
 	app.post('/api/recipe', (request, response) => {
-		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-		if(remoteAddress.includes("192.168.1.")){
+		const remoteAddress = request.connection.remoteAddress;
+		if(remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			
 			let recipe = new Recipe(DB);
@@ -42,9 +45,13 @@ const recipe = (app,DB,creds) => {
 			let id = recipe.add();
 
 			let out = {
-				id: id
+				id: id,
+				status: 'ok'
 			};
 			response.json(out);
+		}
+		else{
+			response.json({'status': 'forbidden'});
 		}
 	});
 	/********************************************/
@@ -52,8 +59,8 @@ const recipe = (app,DB,creds) => {
 
 	/********************************************/
 	app.patch('/api/recipe/:id', (request, response) => {
-		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-		if(remoteAddress.includes("192.168.1.")){
+		const remoteAddress = request.connection.remoteAddress;
+		if(remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			
 			let recipe = new Recipe(DB);
@@ -63,14 +70,17 @@ const recipe = (app,DB,creds) => {
 
 			response.json({'status': 'ok'});
 		}
+		else{
+			response.json({'status': 'forbidden'});
+		}
 	});
 	/********************************************/
 
 
 	/********************************************/
 	app.post('/api/recipe/:id/sendgrid', (request, response) => {
-		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-		if(remoteAddress.includes("192.168.1.")){
+		const remoteAddress = request.connection.remoteAddress;
+		if(remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			
 			let recipe = new Recipe(DB);
@@ -81,14 +91,17 @@ const recipe = (app,DB,creds) => {
 
 			response.json({'status': 'sent'});
 		}
+		else{
+			response.json({'status': 'forbidden'});
+		}
 	});
 	/********************************************/
 
 
 	/********************************************/
 	app.post('/api/recipe/:id/gmail', (request, response) => {
-		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-		if(remoteAddress.includes("192.168.1.")){
+		const remoteAddress = request.connection.remoteAddress;
+		if(remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			
 			let recipe = new Recipe(DB);
@@ -98,6 +111,9 @@ const recipe = (app,DB,creds) => {
 			recipe.gmail();
 
 			response.json({'status': 'sent'});
+		}
+		else{
+			response.json({'status': 'forbidden'});
 		}
 	});
 	/********************************************/

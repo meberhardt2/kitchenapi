@@ -1,10 +1,10 @@
 /**************************************************************************************/
-const camera = (app,DB,fs,tesseract) => {
+const camera = (app,DB,fs,tesseract,allowed_ip) => {
 
 	/********************************************/
 	app.post('/api/camera', async (request, response) => {
-		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-		if(remoteAddress.includes("192.168.1.")){
+		const remoteAddress = request.connection.remoteAddress;
+		if(remoteAddress.includes(allowed_ip)){
 			let file = '../kitchenExpress/uploads/for_ocr.png';
 			let post = request.body;
 			let bitmap = Buffer.from(post.image, 'base64');
@@ -24,7 +24,13 @@ const camera = (app,DB,fs,tesseract) => {
 			
 			let text = await promise;
 
-			response.json({'text': text});
+			response.json({
+				'text': text,
+				'status': 'ok'
+			});
+		}
+		else{
+			response.json({'status': 'forbidden'});
 		}
 	});
 	/********************************************/

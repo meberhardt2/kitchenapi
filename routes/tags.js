@@ -1,5 +1,5 @@
 /**************************************************************************************/
-const tags = (app,DB) => {
+const tags = (app,DB,allowed_ip) => {
 
 	/********************************************/
 	app.get('/api/tags', (request, response) => {
@@ -15,8 +15,8 @@ const tags = (app,DB) => {
 
 	/********************************************/
 	app.post('/api/tags', (request, response) => {
-		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-		if(remoteAddress.includes("192.168.1.")){
+		const remoteAddress = request.connection.remoteAddress;
+		if(remoteAddress.includes(allowed_ip)){
 			const Tag = require('../classes/tag');
 			
 			let tag = new Tag(DB);
@@ -24,9 +24,13 @@ const tags = (app,DB) => {
 			let id = tag.add();
 
 			let out = {
-				id: id
+				id: id,
+				status: 'ok'
 			};
 			response.json(out);
+		}
+		else{
+			response.json({'status': 'forbidden'});
 		}
 	});
 	/********************************************/
@@ -34,15 +38,18 @@ const tags = (app,DB) => {
 
 	/********************************************/
 	app.delete('/api/tags/:id', (request, response) => {
-		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-		if(remoteAddress.includes("192.168.1.")){
+		const remoteAddress = request.connection.remoteAddress;
+		if(remoteAddress.includes(allowed_ip)){
 			const Tag = require('../classes/tag');
 			
 			let tag = new Tag(DB);
 			tag.id = request.params.id;
 			tag.delete();
 
-			response.json({});
+			response.json({status: 'ok'});
+		}
+		else{
+			response.json({'status': 'forbidden'});
 		}
 	});
 	/********************************************/
@@ -50,8 +57,8 @@ const tags = (app,DB) => {
 
 	/********************************************/
 	app.patch('/api/tags/:id', (request, response) => {
-		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-		if(remoteAddress.includes("192.168.1.")){
+		const remoteAddress = request.connection.remoteAddress;
+		if(remoteAddress.includes(allowed_ip)){
 			const Tag = require('../classes/tag');
 			
 			let tag = new Tag(DB);
@@ -61,10 +68,14 @@ const tags = (app,DB) => {
 
 			let out = {
 				id: request.params.id,
-				tag: request.body.tag
+				tag: request.body.tag,
+				status: 'ok'
 			};
 
 			response.json(out);
+		}
+		else{
+			response.json({'status': 'forbidden'});
 		}
 	});
 	/********************************************/

@@ -1,10 +1,10 @@
 /**************************************************************************************/
-const upload = (app,DB,fs,tesseract,uploadMulter) => {
+const upload = (app,DB,fs,tesseract,uploadMulter,allowed_ip) => {
 
 	/********************************************/
 	app.post('/api/upload', uploadMulter.single('imagefile'), async (request, response) => {
-		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-		if(remoteAddress.includes("192.168.1.")){
+		const remoteAddress = request.connection.remoteAddress;
+		if(remoteAddress.includes(allowed_ip)){
 			//imagefile is the name of the formfield that has the image
 			//multer can also take an array of files
 			const tempPath = request.file.path;
@@ -25,7 +25,13 @@ const upload = (app,DB,fs,tesseract,uploadMulter) => {
 			
 			let text = await promise;
 
-			response.json({'text': text});
+			response.json({
+				'text': text,
+				'status': 'ok'
+			});
+		}
+		else{
+			response.json({'status': 'forbidden'});
 		}
 	});
 	/********************************************/

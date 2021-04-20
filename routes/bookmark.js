@@ -1,11 +1,11 @@
 
 /**************************************************************************************/
-const bookmark = (app,DB) => {
+const bookmark = (app,DB,allowed_ip) => {
 
 	/********************************************/
 	app.post('/api/bookmark', (request, response) => {
-		const remoteAddress = request.headers['x-forwarded-for'] || request.connection.remoteAddress;
-		if(remoteAddress.includes("192.168.1.")){
+		const remoteAddress = request.connection.remoteAddress;
+		if(remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			
 			let recipe = new Recipe(DB);
@@ -13,6 +13,9 @@ const bookmark = (app,DB) => {
 			recipe.add_bookmark();
 
 			response.json({'status': 'ok'});
+		}
+		else{
+			response.json({'status': 'forbidden'});
 		}
 	});
 	/********************************************/

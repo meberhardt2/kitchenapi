@@ -81,7 +81,7 @@ module.exports = class recipe{
 		}
 
 		let sql = 'insert into recipe(recipe_name,recipe,bookmarked,ingredients) values(?, ?, ?, ?) ';
-		let data = this.DB.prepare(sql).run(this.post.recipe_name,this.post.recipe,this.post.bookmarked,this.post.ingredients)
+		let data = this.DB.prepare(sql).run(this.post.recipe_name.toLowerCase(),this.post.recipe,this.post.bookmarked,this.post.ingredients)
 
 		if(typeof data.lastInsertRowid === 'undefined' || data.lastInsertRowid < 1){
 			recipe_id = 0;

@@ -10,7 +10,7 @@ const fs = require('fs');
 const tesseract = require('node-tesseract');
 const multer = require('multer');
 const ip = require('my-local-ip')();
-const creds = JSON.parse(fs.readFileSync('../conf/kitchenapi.json', 'UTF-8'));
+const creds = JSON.parse(fs.readFileSync(__dirname+'/conf/kitchenapi.json', 'UTF-8'));
 
 var os = require( 'os' );
 var networkInterfaces = os.networkInterfaces();
@@ -34,7 +34,7 @@ else{
 }
 
 
-const uploadMulter = multer({ dest: '../kitchenExpress/uploads/' });
+const uploadMulter = multer({ dest: __dirname+'/kitchenExpress/uploads/' });
 
 
 //node-sqlite3 runs asynchronous, which leads to promise mess of chaining. better-sqlite3 runs synchronously

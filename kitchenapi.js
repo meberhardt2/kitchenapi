@@ -11,7 +11,7 @@ const tesseract = require('node-tesseract');
 const multer = require('multer');
 const ip = require('my-local-ip')();
 const creds = JSON.parse(fs.readFileSync(__dirname+'/../conf/kitchenapi.json', 'UTF-8'));
-const allowed_ip = ip.replace(/(?:\.\d+){1}$/, '');
+const allowed_ip = ip.replace(/(?:\.\d+){1}$/, '');     //only allow devices on the same network (local) to make updates
 
 var os = require( 'os' );
 var networkInterfaces = os.networkInterfaces();
